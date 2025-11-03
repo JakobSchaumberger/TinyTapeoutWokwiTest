@@ -1,5 +1,5 @@
 // ============================================================
-// SoundGenerator.v
+// tt_um_tinytone.v
 // TinyTapeout Sound Generator
 // Author: Jakob Schaumberger
 // Last edited: 14.10.2025
@@ -11,10 +11,10 @@
 `include "PwmModulator.v"
 
 `default_nettype none
-`ifndef __SOUND_GENERATOR__
-`define __SOUND_GENERATOR__
+`ifndef __TT_UM_TINYTONE__
+`define __TT_UM_TINYTONE__
 
-module SoundGenerator
+module tt_um_tinytone
 # (
     parameter [7:0]  BW     = 24,           // Bit witdh for counters
     parameter [23:0] FS     = 24'd125,      // PWM-Period value (~20kHz)
