@@ -35,8 +35,8 @@ module tt_um_tinytone
 
 );
 
-//wire rst = ~rst_n;
-wire rst = 0;
+wire rst = ~rst_n;
+// wire rst = 0;
 
 wire sound_o;
 wire strb;
