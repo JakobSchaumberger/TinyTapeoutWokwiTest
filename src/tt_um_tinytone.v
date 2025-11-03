@@ -40,7 +40,7 @@ wire rst = ~rst_n;
 
 wire sound_o;
 wire strb;
-wire [23:0] divider_value;
+wire [15:0] divider_value;
 wire[5:0] note_index;
 
 // assign outputs
