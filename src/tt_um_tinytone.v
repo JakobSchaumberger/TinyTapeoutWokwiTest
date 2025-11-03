@@ -40,7 +40,7 @@ wire rst = ~rst_n;
 
 wire sound_o;
 wire strb;
-wire [15:0] divider_value;
+wire [23:0] divider_value;
 wire[5:0] note_index;
 
 // assign outputs
@@ -61,7 +61,7 @@ StrbGenerator #(
 );
 
 NotesRom #(
-    .BW(16)
+    .BW(24)
 ) u_notesRom (
     .note_index_i(note_index),
     .divider_value_o(divider_value)
