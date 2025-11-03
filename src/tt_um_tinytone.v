@@ -22,19 +22,20 @@ module tt_um_tinytone
 )
 (
     // inputs
-    input wire clk,                       // input clock
-    input wire en_i,                        // input enable          
-    input wire rst_n_i,                     // input reset_n (active low)
-    input wire [7:0] switches_i,            // inputs connected to switches
-    input wire [7:0] inputs_i,              // inputs connected to Pin-Header
+    input wire clk,                     // input clock
+    input wire ena,                     // input enable          
+    input wire rst_n,                   // input reset_n (active low)
+    input wire [7:0] ui_in,             // Dedicated 
+    input wire [7:0] uio_in,            // IOs: Input path
 
     // outputs
-    output wire [7:0] display_o,            // outputs connect to 7-segment-display
-    output wire [7:0] outputs_o             // outputs connected to Pin-Header
+    output wire [7:0] display_o,        // outputs connect to 7-segment-display
+    output wire [7:0] uo_out            // outputs connected to Pin-Header
+    output wire [7:0] uio_out,          // IOs: Output path
 
 );
 
-//wire rst = ~rst_n_i;
+//wire rst = ~rst_n;
 wire rst = 0;
 
 wire sound_o;
@@ -43,8 +44,12 @@ wire [23:0] divider_value;
 wire[5:0] note_index;
 
 // assign outputs
-assign outputs_o = {7'b0000000, sound_o};
-assign display_o = 8'b00000000;             // unused outputs
+assign uo_out  = {7'b0000000, sound_o};
+assign uio_out = 0;                         // unused outputs
+assign uio_oe  = 0;
+
+// List all unused inputs to prevent warnings
+wire _unused = &{ena, 1'b0};
 
 StrbGenerator #(
     .BW(24)
