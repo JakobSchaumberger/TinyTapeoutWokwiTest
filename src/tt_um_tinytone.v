@@ -31,7 +31,7 @@ module tt_um_tinytone
     // outputs
     output wire [7:0] uio_oe,           // IOs: Enable path (active high: 0=input, 1=output)
     output wire [7:0] uo_out,           // outputs connected to Pin-Header
-    output wire [7:0] uio_out,          // IOs: Output path
+    output wire [7:0] uio_out           // IOs: Output path
 
 );
 
