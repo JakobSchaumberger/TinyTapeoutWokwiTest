@@ -22,7 +22,7 @@ module tt_um_tinytone
 )
 (
     // inputs
-    input wire clk_i,                       // input clock
+    input wire clk,                       // input clock
     input wire en_i,                        // input enable          
     input wire rst_n_i,                     // input reset_n (active low)
     input wire [7:0] switches_i,            // inputs connected to switches
@@ -49,7 +49,7 @@ assign display_o = 8'b00000000;             // unused outputs
 StrbGenerator #(
     .BW(24)
 ) u_strbGen (
-    .clk_i(clk_i),
+    .clk_i(clk),
     .rst_i(rst),
     .counter_maxVal(FS_MAX),
     .strb_o(strb)
@@ -66,7 +66,7 @@ SequenceCounter #(
     .BW(6),
     .SEQ_LEN(64)
 ) u_sequenceCounter (
-    .clk_i(clk_i),
+    .clk_i(clk),
     .rst_i(rst),
     .strb_i(strb),
     .noteIndex_o(note_index)
@@ -75,7 +75,7 @@ SequenceCounter #(
 PwmModulator #(
     .BW(24)
 ) u_pwmModulator (
-    .clk_i(clk_i),
+    .clk_i(clk),
     .rst_i(rst),
     .period_i(divider_value),
     .dutyCycle_i(divider_value>>1),
