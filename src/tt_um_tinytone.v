@@ -30,7 +30,7 @@ module tt_um_tinytone
 
     // outputs
     output wire [7:0] display_o,        // outputs connect to 7-segment-display
-    output wire [7:0] uo_out            // outputs connected to Pin-Header
+    output wire [7:0] uo_out,           // outputs connected to Pin-Header
     output wire [7:0] uio_out,          // IOs: Output path
 
 );
