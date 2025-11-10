@@ -44,6 +44,10 @@ wire strb;
 wire [23:0] divider_value;
 wire[5:0] note_index;
 
+wire [BW-1:0] raw_duty;
+wire [BW-1:0] env_duty;
+reg note_on;
+
 // assign outputs
 assign uo_out  = {7'b0000000, sound_o};
 assign uio_out = 0;                         // unused outputs
@@ -94,7 +98,7 @@ EnvelopeGenerator #(
     .BW(BW),
     .ENV_WIDTH(8)
 ) u_envelopeGenerator (
-    .clk_i(clk_i),
+    .clk_i(clk),
     .rst_i(rst),
     .note_on_i(note_on),
     .duty_i(divider_value),
