@@ -25,41 +25,55 @@ module EnvelopeGenerator
     output reg  [BW-1:0] duty_o        // Envelope-shaped PWM amplitude
 );
 
-reg [ENV_WIDTH-1:0] env_level;  // Current envelope level
-reg [7:0] rate_cnt;             // Slow-down counter for envelope timing
+reg [ENV_WIDTH-1:0] env_level;  
+reg [7:0] rate_cnt;              
+
+// combinatorial signals
+reg [ENV_WIDTH-1:0] next_env_level;
+reg [7:0] next_rate_cnt;
+reg [BW-1:0]      next_duty_o;
 
 localparam ENV_MAX = {ENV_WIDTH{1'b1}};
 
-// ------------------------------------------------------------
-// Attack / Release Envelope Generator
-// ------------------------------------------------------------
+// combinatorial process
+always @(*) begin
+    // default assignments
+    next_env_level = env_level;
+    next_rate_cnt  = rate_cnt;
+    next_duty_o    = (duty_i * env_level) >> ENV_WIDTH;
+
+    // envelope timing
+    if (note_on_i) begin
+        // Attack phase
+        if (rate_cnt >= ATTACK_RATE) begin
+            next_rate_cnt = 0;
+            if (env_level < ENV_MAX)
+                next_env_level = env_level + 1'b1;
+        end else begin
+            next_rate_cnt = rate_cnt + 1'b1;
+        end
+    end else begin
+        // Release phase
+        if (rate_cnt >= RELEASE_RATE) begin
+            next_rate_cnt = 0;
+            if (env_level > 0)
+                next_env_level = env_level - 1'b1;
+        end else begin
+            next_rate_cnt = rate_cnt + 1'b1;
+        end
+    end
+end
+
+// register process
 always @(posedge clk_i or posedge rst_i) begin
     if (rst_i) begin
         env_level <= 0;
         rate_cnt  <= 0;
         duty_o    <= 0;
     end else begin
-        // Slow down envelope progression
-        rate_cnt <= rate_cnt + 1'b1;
-
-        if (note_on_i) begin
-            // Attack phase: ramp up until ENV_MAX
-            if (rate_cnt >= ATTACK_RATE) begin
-                rate_cnt <= 0;
-                if (env_level < ENV_MAX)
-                    env_level <= env_level + 1'b1;
-            end
-        end else begin
-            // Release phase: ramp down to 0
-            if (rate_cnt >= RELEASE_RATE) begin
-                rate_cnt <= 0;
-                if (env_level > 0)
-                    env_level <= env_level - 1'b1;
-            end
-        end
-
-        // Scale duty cycle by current envelope level
-        duty_o <= (duty_i * env_level) >> ENV_WIDTH;
+        env_level <= next_env_level;
+        rate_cnt  <= next_rate_cnt;
+        duty_o    <= next_duty_o;
     end
 end
 

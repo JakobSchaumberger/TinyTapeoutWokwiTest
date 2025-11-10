@@ -41,7 +41,7 @@ wire rst = ~rst_n;
 
 wire sound_o;
 wire strb;
-wire [23:0] divider_value;
+wire [16:0] divider_value;
 wire[5:0] note_index;
 
 wire [BW-1:0] raw_duty;
@@ -72,7 +72,7 @@ StrbGenerator #(
 // Notes ROM
 // ------------------------------------------------------------
 NotesRom #(
-    .BW(24)
+    .BW(16)
 ) u_notesRom (
     .note_index_i(note_index),
     .divider_value_o(divider_value)
@@ -83,7 +83,7 @@ NotesRom #(
 // ------------------------------------------------------------
 SequenceCounter #(
     .BW(6),
-    .SEQ_LEN(64)
+    .SEQ_LEN(32)
 ) u_sequenceCounter (
     .clk_i(clk),
     .rst_i(rst),
@@ -123,7 +123,7 @@ end
 // PWM modulator
 // ------------------------------------------------------------
 PwmModulator #(
-    .BW(24)
+    .BW(16)
 ) u_pwmModulator (
     .clk_i(clk),
     .rst_i(rst),
