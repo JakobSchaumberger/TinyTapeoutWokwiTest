@@ -1,6 +1,11 @@
 // ============================================================
 // tt_um_tinytone.v
-// TinyTapeout Sound Generator
+// Tiny Tapeout SKY 25b, tt-tinytone
+// Description: 
+//      Generates a PWM audio output from a sequence of 
+//      64 notes. 
+//      Plays the 'Super Mario Bros.' theme song on a piezo 
+//      buzzer.
 // Author: Jakob Schaumberger
 // Last edited: 09.11.2025
 // ============================================================
@@ -37,8 +42,8 @@ wire rst = ~rst_n;
 
 wire sound_o;
 wire strb;
-wire [23:0] divider_value;
-wire[5:0] note_index;
+wire [23:0] dividerValue;
+wire[5:0] noteIndex;
 
 // assign outputs
 assign uo_out  = {7'b0000000, sound_o};
@@ -46,7 +51,7 @@ assign uio_out = 0;                         // unused outputs
 assign uio_oe  = 0;
 
 // List all unused inputs to prevent warnings
-wire _unused = &{ena, 1'b0};
+wire _unused = &{1'b0, ui_in, uio_in, ena};
 
 // ------------------------------------------------------------
 // Strobe generator
@@ -66,8 +71,8 @@ StrbGenerator #(
 NotesRom #(
     .BW(16)
 ) u_notesRom (
-    .note_index_i(note_index),
-    .divider_value_o(divider_value)
+    .noteIndex_i(noteIndex),
+    .dividerValue_o(dividerValue)
 );
 
 // ------------------------------------------------------------
@@ -80,7 +85,7 @@ SequenceCounter #(
     .clk_i(clk),
     .rst_i(rst),
     .strb_i(strb),
-    .noteIndex_o(note_index)
+    .noteIndex_o(noteIndex)
 );
 
 // ------------------------------------------------------------
@@ -91,8 +96,8 @@ PwmModulator #(
 ) u_pwmModulator (
     .clk_i(clk),
     .rst_i(rst),
-    .period_i(divider_value),
-    .dutyCycle_i(divider_value >> 1),
+    .period_i(dividerValue),
+    .dutyCycle_i(dividerValue >> 1),
 
     .pwm_o(sound_o)
 );

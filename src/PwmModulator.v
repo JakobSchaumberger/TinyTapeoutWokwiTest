@@ -1,6 +1,6 @@
 // ============================================================
 // PwmModulator.v
-// Simple Parameterized PWM Generator
+// Simple parameterized PWM generator
 // Last edited: 14.10.2025
 // Author: Jakob Schaumberger
 // ============================================================
@@ -51,7 +51,7 @@ end
 // assign PWM-Counter value to PWM-Output
 assign pwm_o = (counterVal < dutyCycle_i);
 
-endmodule // PWM_Gen
+endmodule // PwmModulator
 
 `endif
 `default_nettype wire

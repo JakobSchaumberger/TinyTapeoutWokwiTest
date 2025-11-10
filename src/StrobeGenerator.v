@@ -1,6 +1,9 @@
-// Jakob Schaumberger
-// 10.10.2025
-// Strobe Generator
+// ============================================================
+// StrobeGenerator.v
+// Simple strobe generator 
+// Last edited: 14.10.2025
+// Author: Jakob Schaumberger
+// ============================================================
 
 `default_nettype none
 `ifndef __STRB_GENERATOR__
@@ -44,7 +47,7 @@ end
 
 assign strb_o = (counterVal == counter_maxVal) && (counterVal != 0);
 
-endmodule // Strb_generator
+endmodule // StrbGenerator
 
 `endif
 `default_nettype wire
