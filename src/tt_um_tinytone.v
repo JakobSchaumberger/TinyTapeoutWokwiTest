@@ -5,11 +5,9 @@
 // Last edited: 09.11.2025
 // ============================================================
 
-
 `include "StrobeGenerator.v"
 `include "NotesRom.v"
 `include "SequenceCounter.v"
-`include "EnvelopeGenerator.v"
 `include "PwmModulator.v"
 
 `default_nettype none
@@ -18,9 +16,7 @@
 
 module tt_um_tinytone
 # (
-    parameter [7:0]  BW     = 24,           // Bit witdh for counters
-    parameter [23:0] FS     = 24'd125,      // PWM-Period value (~20kHz)
-    parameter [23:0] FS_MAX = 24'd2400000   // Strobe period ~0.25s
+    parameter [23:0] NOTE_DURATION = 24'd2400000   // Strobe period ~0.25s
 )
 (
     // inputs
@@ -37,16 +33,13 @@ module tt_um_tinytone
 
 );
 
-wire rst = ~rst_n;
+//wire rst = ~rst_n;
+wire rst = 0;
 
 wire sound_o;
 wire strb;
-wire [16:0] divider_value;
+wire [23:0] divider_value;
 wire[5:0] note_index;
-
-wire [BW-1:0] raw_duty;
-wire [BW-1:0] env_duty;
-reg note_on;
 
 // assign outputs
 assign uo_out  = {7'b0000000, sound_o};
@@ -64,7 +57,7 @@ StrbGenerator #(
 ) u_strbGen (
     .clk_i(clk),
     .rst_i(rst),
-    .counter_maxVal(FS_MAX),
+    .counter_maxVal(NOTE_DURATION),
     .strb_o(strb)
 );
 
@@ -83,41 +76,13 @@ NotesRom #(
 // ------------------------------------------------------------
 SequenceCounter #(
     .BW(6),
-    .SEQ_LEN(32)
+    .SEQ_LEN(64)
 ) u_sequenceCounter (
     .clk_i(clk),
     .rst_i(rst),
     .strb_i(strb),
     .noteIndex_o(note_index)
 );
-
-// ------------------------------------------------------------
-// Envelope generator
-// ------------------------------------------------------------
-EnvelopeGenerator #(
-    .BW(BW),
-    .ENV_WIDTH(6)
-) u_envelopeGenerator (
-    .clk_i(clk),
-    .rst_i(rst),
-    .note_on_i(note_on),
-    .duty_i(divider_value),
-    .duty_o(env_duty)
-);
-
-// ------------------------------------------------------------
-// Generate a 1-cycle pulse on new note
-// ------------------------------------------------------------
-reg [5:0] last_note;
-always @(posedge clk or posedge rst) begin
-    if (rst) begin
-        last_note <= 0;
-        note_on   <= 0;
-    end else begin
-        note_on   <= (note_index != last_note);
-        last_note <= note_index;
-    end
-end
 
 // ------------------------------------------------------------
 // PWM modulator
@@ -128,7 +93,7 @@ PwmModulator #(
     .clk_i(clk),
     .rst_i(rst),
     .period_i(divider_value),
-    .dutyCycle_i(env_duty),
+    .dutyCycle_i(divider_value >> 1),
 
     .pwm_o(sound_o)
 );
