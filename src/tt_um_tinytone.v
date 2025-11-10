@@ -109,7 +109,7 @@ EnvelopeGenerator #(
 // Generate a 1-cycle pulse on new note
 // ------------------------------------------------------------
 reg [5:0] last_note;
-always @(posedge clk_i or posedge rst) begin
+always @(posedge clk or posedge rst) begin
     if (rst) begin
         last_note <= 0;
         note_on   <= 0;
