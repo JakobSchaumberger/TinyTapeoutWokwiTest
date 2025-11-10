@@ -96,7 +96,7 @@ SequenceCounter #(
 // ------------------------------------------------------------
 EnvelopeGenerator #(
     .BW(BW),
-    .ENV_WIDTH(8)
+    .ENV_WIDTH(6)
 ) u_envelopeGenerator (
     .clk_i(clk),
     .rst_i(rst),
