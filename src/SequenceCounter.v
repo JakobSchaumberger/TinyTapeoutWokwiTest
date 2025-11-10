@@ -19,8 +19,8 @@ module SequenceCounter
     input wire rst_i,                   // input reset
     input wire strb_i,                  // input strobe signal
 
-    input wire buttonPlay_i,            // input button to start the melody sequence
-    input wire buttonStop_i,            // input button to stop the melody sequence
+    //input wire buttonPlay_i,            // input button to start the melody sequence
+    //input wire buttonStop_i,            // input button to stop the melody sequence
 
     // Outputs
     output wire[BW-1:0] noteIndex_o     // current note index output
@@ -70,9 +70,9 @@ always @(*) begin
 
         STATE_PLAY: begin
             // if stop-button pressed, return to ide
-            if (buttonStop_i) begin
-                next_state = STATE_IDLE;
-            end
+            // if (buttonStop_i) begin
+            //     next_state = STATE_IDLE;
+            // end
 
             // on strobe, advance sequence counter
             if (strb_i) begin 

@@ -5,6 +5,7 @@
 // Last edited: 09.11.2025
 // ============================================================
 
+
 `include "StrobeGenerator.v"
 `include "NotesRom.v"
 `include "SequenceCounter.v"
