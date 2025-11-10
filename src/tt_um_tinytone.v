@@ -42,8 +42,8 @@ wire rst = ~rst_n;
 
 wire sound_o;
 wire strb;
-wire [23:0] dividerValue;
-wire[5:0] noteIndex;
+wire [15:0] dividerValue;
+wire [5:0]  noteIndex;
 
 // assign outputs
 assign uo_out  = {7'b0000000, sound_o};
