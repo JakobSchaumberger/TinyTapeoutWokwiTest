@@ -44,7 +44,7 @@ always @(*) begin
         6'd21: dividerValue_o = 16'd12873;  // Bb4
         6'd22: dividerValue_o = 16'd13636;  // A4
         6'd23: dividerValue_o = 16'd0;
-        6'd16: dividerValue_o = 16'd15306;  // G4
+        6'd24: dividerValue_o = 16'd15306;  // G4
         6'd25: dividerValue_o = 16'd9097;   // E5
         6'd26: dividerValue_o = 16'd7648;   // G5
         6'd27: dividerValue_o = 16'd6818;   // A5
